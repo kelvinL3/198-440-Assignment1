@@ -20,11 +20,12 @@ def generateBoard (size):
 			maxMoves[2] = size - y
 			maxMoves[3] = y - 1
 			board[x-1,y-1] = np.random.randint(1, np.amax(maxMoves+1))
-			print(x,y,np.amax(maxMoves+1))
-		print()
+			#print(x,y,np.amax(maxMoves+1))
+		#print()
 	board[size-1,size-1]=0
 	np.set_printoptions(precision=5, suppress=False)
 	print(board)
+	print(board[0].size)
 	return board
 
-generateBoard(11)
+#generateBoard(5)
