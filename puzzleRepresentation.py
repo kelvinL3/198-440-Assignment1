@@ -28,4 +28,18 @@ def generateBoard (size):
 	print(board[0].size)
 	return board
 
-#generateBoard(5)
+def writeBoard(board):
+	try:
+		f = open("boardState.txt","w+")
+		f.write("[\n")
+		for i in range(board[1].size):
+			for j in range(board[1].size):
+				f.write(str(board[i,j]))
+				if i != (board[1].size-1) or j != (board[1].size-1):
+					f.write(", ")
+			f.write("\n")
+		f.write("]")
+	except:
+		print("saving error")
+
+#writeBoard(generateBoard(10))
