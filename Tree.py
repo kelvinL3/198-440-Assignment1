@@ -1,9 +1,10 @@
-class Tree(object):
-    def __init__(self, children, jumpDistance, row, col):
-        self.upChild = None
-        self.downChild = None
-        self.rightChild = None
-        self.leftChild = None
-        self.jumpDistance = None
-        self.row = None
-        self.col = None
+class Node:
+    def __init__(self, upChild, downChild, rightChild, leftChild, jumpDistance, row, col, depth):
+        self.upChild = upChild
+        self.downChild = downChild
+        self.rightChild = rightChild
+        self.leftChild = leftChild
+        self.jumpDistance = jumpDistance
+        self.row = row
+        self.col = col
+        self.depth = depth
