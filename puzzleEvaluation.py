@@ -5,11 +5,6 @@ from puzzleRepresentation import generateBoard
 import Tree as Tree
 import queue
 
-class coor(object):
-	def __init__(self, x, y):
-		self.row = x
-		self.col = y
-
 def isInBoard(size, row, col):
 	if row > size or row < 1 or col > size or col < 1: 
 		return False
@@ -17,23 +12,25 @@ def isInBoard(size, row, col):
 
 def evaluate(board):
 	size = board[0].size
+
+
+	visited = np.zeros((size,size), dtype=np.int)
+	visited[0,0] = 1
+
+	#children, jumpDistance, row, col
+	rootNode = Tree.Node(None, None, None, None, board[0,0], 1, 1, 0);
+
 	if size == 0:
 		print("Cannot evaluate board of size zero")
-		return 
+		sys.exit()
 	if size == 1:
 		print("There is only a goal tile (with value 0)")
 		board[0,0] = 0
 		np.set_printoptions(precision=5, suppress=False)
-		print(board)
-		return board
+		return rootNode
 
-	visited = np.zeros((size,size), dtype=np.int)
-	visited[0,0] = 1
-	q = queue.Queue()
-
-	#children, jumpDistance, row, col
-	rootNode = Tree.Node(None, None, None, None, board[0,0], 1, 1, 0);
 	t = rootNode
+	q = queue.Queue()
 	q.put(t)
 	while not q.empty():
 		t = q.get()
@@ -82,9 +79,22 @@ def bfs(root, board):
 def calcNumberToReach(root, size):
 	numberToReach = np.zeros((size,size), dtype=np.int)
 	bfs(root, numberToReach)
+	#replace everything that was not reached with '-1'
 	for i in range(size):
 		for j in range(size):
 			if numberToReach[i,j] == 0:
 				numberToReach[i,j] = -1
 	numberToReach[0,0] = 0
 	return numberToReach
+
+def evalScore(numberToReach):
+	size = numberToReach[0].size
+	if numberToReach[size-1,size-1] != -1: #end is reachable
+		return numberToReach[size-1,size-1]
+	else:
+		score = 0 
+		for i in range(size):
+			for j in range(size):
+				if numberToReach[i,j] == -1:
+					score += -1
+		return score

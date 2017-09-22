@@ -9,11 +9,14 @@ from Tree import *
 
 
 
-board = generateBoard(10)
+board = generateBoard(5)
 #print("save as\n", board)
 name = "boardState.txt"
 writeBoard(board, name)
 board = readBoard(name)
-print("read as\n", board,"\n")
+print("Puzzle Board Read As\n", board,"\n")
 rootNode = evaluate(board)
-print(calcNumberToReach(rootNode, board[0].size))
+NumberToReachBoard = calcNumberToReach(rootNode, board[0].size)
+print("Number of Moves to Reach Each Cell\n", NumberToReachBoard)
+print()
+print("evalFunction(board)=", evalScore(NumberToReachBoard))

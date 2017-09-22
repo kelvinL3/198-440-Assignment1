@@ -19,32 +19,37 @@ def generateBoard (size):
 			maxMoves[1] = x - 1
 			maxMoves[2] = size - y
 			maxMoves[3] = y - 1
-			board[x-1,y-1] = np.random.randint(1, np.amax(maxMoves+1))
+			#random integer from 1 to np.amax(maxMoves)+1, including 1, discluding np.amax(maxMoves)+1
+			board[x-1,y-1] = np.random.randint(1, np.amax(maxMoves)+1) 
 	board[size-1,size-1]=0
 	np.set_printoptions(precision=5, suppress=False)
 	return board
 
 def writeBoard(board, name):
+	if board is not None:
 		f = open(name,"w+")
 		f.write(str(board[0].size))
 		f.write("\n")
-		for i in range(board[1].size):
-			for j in range(board[1].size):
+		for i in range(board[0].size):
+			for j in range(board[0].size):
 				f.write(str(board[i,j]))
-				#if i != (board[1].size-1) or j != (board[1].size-1):
+				#if i != (board[0].size-1) or j != (board[0].size-1):
 				f.write(", ")
 			f.write("\n")
+	else:
+		exit()
 
 def readBoard(name):
 	file = open(name, 'r')
 	size = int(file.readline())
+	print("n=", size)
 	board = np.empty((size,size), dtype=np.int)
 	i = 0
 	j = 0
 	for line in file:
 		while line != "\n":
-			temp = line[:1]
-			line = line[3:]
+			temp = line[:line.find(",")]
+			line = line[line.find(",")+2:]
 			#print("temp:", temp,";",line)
 			board[j,i] = int(temp)
 			i+=1
