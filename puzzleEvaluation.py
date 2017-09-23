@@ -91,11 +91,11 @@ def calcNumberToReach(root, size):
 def evalScore(numberToReach):
 	size = numberToReach[0].size
 	if numberToReach[size-1,size-1] != -1: #end is reachable
-		return numberToReach[size-1,size-1]
+		return int(numberToReach[size-1,size-1])
 	else:
 		score = 0 
 		for i in range(size):
 			for j in range(size):
 				if numberToReach[i,j] == -1:
 					score += -1
-		return score
+		return int(score)
