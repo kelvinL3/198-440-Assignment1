@@ -10,6 +10,7 @@ def isInBoard(size, row, col):
 		return False
 	return True
 
+#returns the tree
 def evaluate(board):
 	size = board[0].size
 
@@ -36,14 +37,14 @@ def evaluate(board):
 		t = q.get()
 		jumpLength = t.jumpDistance
 		if isInBoard(board[0].size, t.row+jumpLength, t.col): #if it's in the board
-			if visited[t.row-1+jumpLength,t.col-1] == 0: #if it hasn't been visited yet
+			if visited[t.row-1+jumpLength, t.col-1] == 0: #if it hasn't been visited yet
 				visited[t.row-1+jumpLength,t.col-1] = 1
 				#print("downCheck", t.row, t.col, board[t.row-1,t.col-1],t.depth)
 				depth = int(t.depth) + 1
 				t.downChild = Tree.Node(None, None, None, None, board[t.row-1+jumpLength,t.col-1], t.row+jumpLength, t.col, depth)
 				q.put(t.downChild)
 		if isInBoard(board[0].size, t.row-jumpLength, t.col):
-			if visited[t.row-1-jumpLength,t.col-1] == 0:
+			if visited[t.row-1-jumpLength, t.col-1] == 0:
 				visited[t.row-1-jumpLength,t.col-1] = 1
 				#print("upCheck", t.row, t.col, board[t.row-1,t.col-1],t.depth)
 				depth = int(t.depth) + 1
@@ -75,7 +76,7 @@ def bfs(root, board):
 		bfs(root.leftChild, board)
 	return -1
 
-#given the root of the tree, g
+#given the root of the tree, give the numberToReach matrix
 def calcNumberToReach(root, size):
 	numberToReach = np.zeros((size,size), dtype=np.int)
 	bfs(root, numberToReach)
