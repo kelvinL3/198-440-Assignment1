@@ -1,0 +1,55 @@
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int argc, char * argv[]){
+	printf("Here is a var: %d\n", argc); // backslash and percent escape the character
+	
+	char ABNA[5];
+	
+	ABNA[0] = 'h';
+	
+	//or 
+	
+	char ABNA[] = {'h','e','l','l','o','\0'};
+	
+}
+	
+	strings: null terminated arrays of chars
+	booleans: 0 = false, 1 = true
+
+//structs require pairs of types and variables
+//<> means required, || means optional
+struct <name> {
+	<type0> <var0>;
+	...
+	...
+	<typeN> <varN>;
+};
+
+struct point {
+	int x;
+	int y;
+};
+
+<type> <name> = <value>;
+
+struct point Alocation = {2,3};
+
+Alocation.x
+
+//note: always initialize everything, even if null; otherwise, data from that spot where the struct was initialized will be used
+struct point OtherLocation = NULL;
+
+OtherLocation.y=12;
+
+
+
+
+
+
+
+
+
+
+

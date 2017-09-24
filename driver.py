@@ -5,6 +5,9 @@ from puzzleEvaluation import *
 from Tree import *
 from hillClimbing import *
 #import puzzleEvaluation 
+from PYQT4 import *
+from datetime import datetime
+import time
 
 def createAndCalcBoard(size):
 	board = generateBoard(size)
@@ -13,25 +16,26 @@ def createAndCalcBoard(size):
 	writeBoard(board, name)
 
 	board = readBoard(name)
-	print("Puzzle Board Read As\n", board,"\n")
+	#print("Puzzle Board Read As\n", board,"\n")
 
-	rootNode = evaluate(board)
-	NumberToReachBoard = calcNumberToReach(rootNode, size)
-	print("Number of Moves to Reach Each Cell\n", NumberToReachBoard)
-	print()
-	print("evalFunction(board_BEFORE)=", evalScore(NumberToReachBoard), "\n")
+	# rootNode = evaluate(board)
+	# NumberToReachBoard = calcNumberToReach(rootNode, size)
+	# print("Number of Moves to Reach Each Cell\n", NumberToReachBoard)
+	# print()
+	# print("evalFunction(board_BEFORE)=", evalScore(NumberToReachBoard), "\n")
 	return board
+
+#return distanceBoard
+def calcDistanceBoard(board):
+	distanceBoard = calcNumberToReach(evaluate(board), board[0].size)
+	return distanceBoard
 
 #BasicHillClimbing, for loading in a specific one
 def doHillClimbing(board, size, iterations, p=0):
-	#board = createAndCalcBoard(size)
-	afterBasicHillClimbing = basicHillClimbing(board, iterations, p)
-	print("After Basic Hill Climbing\n", afterBasicHillClimbing)
-	distanceBoard = calcNumberToReach(evaluate(afterBasicHillClimbing), size)
-	print("distanceBoard\n", distanceBoard)
-	#newEval = evalScore(calcNumberToReach(evaluate(board), size))
-	print("evalFunction(board_AFTER)=", evalScore(distanceBoard))
-	return 
+	f = open("BasicHillClimbingPlotData.txt","a") #a is for appending, pointer is at end of file
+	# f.write()
+	afterBasicHillClimbing = basicHillClimbing(board, iterations, p, f)
+	return afterBasicHillClimbing
 
 #HillClimbingWithRandomRestart
 def doHillClimbingWithRandomRestart(size, iterations, numberOfRestarts, p=0):
@@ -57,7 +61,7 @@ def doHillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, T, 
 	afterHillClimbingWithSimulatedAnnealing = hillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, T, d)
 	i = 0
 	while i < numberOfRestarts:
-		print("\t\t\tBoard", i+1)
+		print("\t\tBoard", i+1)
 		print(afterHillClimbingWithSimulatedAnnealing.preBoards[i])
 		print(afterHillClimbingWithSimulatedAnnealing.preDistanceBoards[i])
 		print(afterHillClimbingWithSimulatedAnnealing.preScores[i])
@@ -73,13 +77,26 @@ def doHillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, T, 
 		#gives the index of the best outcome
 
 
-size = 5
-iterations = 900
-numberOfRestarts = 2
+def basicBoardCreation(size):
+	board = createAndCalcBoard(size)
+	dboard = calcDistanceBoard(board)
+	score = evalScore(dboard)
+	#time.sleep(1)
+	timeToExecute = datetime.now() - starttimme
+	drawMatrix("Initial Board", board, dboard, score, timeToExecute)
 
+def basicHillClimbingDriver(size, iterations, visualize = False):
+	board = createAndCalcBoard(size)
+	dboard = calcDistanceBoard(board)
+	score = evalScore(dboard)
+	board1 = doHillClimbing(board, size, iterations)
+	dboard1 = calcDistanceBoard(board1)
+	score1 = evalScore(dboard1)
+	timeToExecute = datetime.now() - starttimme
+	if visualize:
+		drawMatrix("Initial Board", board, dboard, score, timeToExecute)
+		drawMatrix("Final Board", board1, dboard1, score1, timeToExecute)
 
-board = createAndCalcBoard(size)
-doHillClimbing(board, size, iterations)
 #doHillClimbingWithRandomRestart(size, iterations, numberOfRestarts)
 
 
@@ -89,3 +106,16 @@ doHillClimbing(board, size, iterations)
 
 #doHillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, T, d)
 #doHillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, 100, .97)
+
+
+starttimme = datetime.now()
+size = 5
+iterations = 2000
+numberOfRestarts = 2
+
+
+#basicBoardCreation(11)
+for i in range(0,50):
+	basicHillClimbingDriver(size, iterations, False)
+
+sys.exit()

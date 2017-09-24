@@ -41,13 +41,15 @@ def chooseRandomCell(size):
 	return coor
 
 #input the standard board
-def basicHillClimbing(board, iterations, p):
+def basicHillClimbing(board, iterations, p, f=None):
 	hillClimbBoard = np.copy(board)
 	size = hillClimbBoard[0].size
 	eval = evalScore(calcNumberToReach(evaluate(hillClimbBoard),size))
 	i=1
 	count1 = 0
 	count2 = 0
+
+	fString = ""
 	while i <= iterations:
 		coor = chooseRandomCell(hillClimbBoard[0].size)
 		maxMoves = np.empty(4)
@@ -60,6 +62,8 @@ def basicHillClimbing(board, iterations, p):
 		hillClimbBoard[coor.row-1,coor.col-1] = np.random.randint(1, np.amax(maxMoves)+1)
 		newEval = evalScore(calcNumberToReach(evaluate(hillClimbBoard), size))
 
+		fString = fString + str(eval) + ","
+
 		if newEval >= eval:
 			eval = newEval
 		elif np.random.random() < p:
@@ -69,7 +73,9 @@ def basicHillClimbing(board, iterations, p):
 			hillClimbBoard[coor.row-1,coor.col-1] = prevValue
 			count2 += 1
 		i += 1
-	print(count1, ":::", count2)
+	fString = fString + str(eval)
+	f.write(fString+"\n")
+	#print(count1, ":::", count2)
 	return hillClimbBoard
 
 def hillClimbingWithRandomRestart(size, iterations, restarts, p):
@@ -138,7 +144,7 @@ def simAnnealHillClimbing(board, iterations, T, d):
 		print(eval, " ", newEval, " ", T, "  ", simAnnealProb(T, d, eval, newEval))
 		T = T*d
 		i += 1
-	print(count1, ":::", count2)
+	#print(count1, ":::", count2)
 	return hillClimbBoard
 
 def hillClimbingWithSimulatedAnnealing(size, iterations, restarts, T, d):

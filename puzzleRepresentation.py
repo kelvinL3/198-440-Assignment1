@@ -42,7 +42,7 @@ def writeBoard(board, name):
 def readBoard(name):
 	file = open(name, 'r')
 	size = int(file.readline())
-	print("n=", size)
+	#print("n=", size)
 	board = np.empty((size,size), dtype=np.int)
 	i = 0
 	j = 0
