@@ -148,57 +148,56 @@ def printListOfArrays(listOfArrays):
 # dimension = size from before, name change due to size and popSize being similar
 # 
 
-dimension = 11
-popSize = 200
-topN =  30
-iterations = 15000
+def ignore():
+	dimension = 11
+	popSize = 200
+	topN =  30
+	iterations = 15000
 
-#print("starttime",starttimme)
-population = createInitialPopulation(dimension, popSize)
+	#print("starttime",starttimme)
+	population = createInitialPopulation(dimension, popSize)
 
-#for i in range(iterations):
-f = open("GATEST.csv","a")
-#g = open("genAlgo9Avg.csv","a") 
-
-
-
-starttimme = datetime.now()
-for i in range(1):
-	sF=""
-	#sG=""
-	check = True
-	best = -dimension*dimension
-	while iterations!=0: #check: #and iterations != 0:
-		#printListOfArrays(population)
-		#culling
-		popScores = evaluatePopulation(dimension, popSize, population)
-		a = maxPopScores(popScores, popSize)
-		#print(best)
-		if a > best:
-			best = a
-		sF = sF + str(best) + ","
-		#sG = sG + str(averagePopScores(popScores, popSize)) + ","
-		
-		normalizeScores(dimension, popSize, popScores)
-		survivors = takeTopN(topN, population, popScores)
-
-		#mating
-		repopulation(topN, survivors, popSize)
-		population = survivors
-
-		#mutating
-		randomlyMutatePopulation(popSize, population, 0.13)
-
-		# if datetime.now()-starttimme > timedelta(seconds=83):
-		# 	check = False
-		iterations += -1
-	iterations = 2750
-	print(iterations)
-	#print(sF + "\n:\n" + sG)
-	f.write(sF+"\n")
-	#g.write(sG+"\n")
+	#for i in range(iterations):
+	f = open("GATEST.csv","a")
+	#g = open("genAlgo9Avg.csv","a") 
 
 
 
-#print("FINAL POPULATION")
-#printListOfArrays(population)
+	starttimme = datetime.now()
+	for i in range(1):
+		sF=""
+		#sG=""
+		check = True
+		best = -dimension*dimension
+		while iterations!=0: #check: #and iterations != 0:
+			#printListOfArrays(population)
+			#culling
+			popScores = evaluatePopulation(dimension, popSize, population)
+			a = maxPopScores(popScores, popSize)
+			#print(best)
+			if a > best:
+				best = a
+			sF = sF + str(best) + ","
+			#sG = sG + str(averagePopScores(popScores, popSize)) + ","
+			
+			normalizeScores(dimension, popSize, popScores)
+			survivors = takeTopN(topN, population, popScores)
+
+			#mating
+			repopulation(topN, survivors, popSize)
+			population = survivors
+
+			#mutating
+			randomlyMutatePopulation(popSize, population, 0.13)
+
+			# if datetime.now()-starttimme > timedelta(seconds=83):
+			# 	check = False
+			iterations += -1
+		iterations = 2750
+		print(iterations)
+		f.write(sF+"\n")
+
+
+
+	#print("FINAL POPULATION")
+	#printListOfArrays(population)

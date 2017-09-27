@@ -9,9 +9,10 @@ from PYQT4 import *
 from datetime import datetime
 import time
 from driver import *
+from geneticAlgoDriver import *
 
 #Task1 - (size, iterations, visualize=True)
-basicHillClimbingDriver(11, iterations=6000, visualize=True)
+#basicHillClimbingDriver(11, iterations=6000, visualize=True)
 
 #Task2
 	# 1. put txt file in the same directory
@@ -35,3 +36,45 @@ basicHillClimbingDriver(11, iterations=6000, visualize=True)
 
 #Task7
 
+# dimension = 5
+# popSize = 50
+# topN =  10
+# iterations = 150
+
+# population = createInitialPopulation(dimension, popSize)
+
+# initial = np.copy(population[0])
+# best = -dimension*dimension
+# while iterations!=0: #check: #and iterations != 0:
+# 	#culling
+# 	popScores = evaluatePopulation(dimension, popSize, population)
+# 	a = maxPopScores(popScores, popSize)
+	
+# 	normalizeScores(dimension, popSize, popScores)
+# 	survivors = takeTopN(topN, population, popScores)
+
+# 	#mating
+# 	repopulation(topN, survivors, popSize)
+# 	population = survivors
+
+# 	#mutating
+# 	randomlyMutatePopulation(popSize, population, 0.13)
+
+# 	# 	check = False
+# 	iterations += -1
+
+
+# dboard = calcDistanceBoard(initial)
+# score = evalScore(dboard)
+
+
+
+# popScores = evaluatePopulation(dimension, popSize, population)
+# x = maxPopScores(popScores, popSize)
+# print(x)
+
+# board1 = population[x]
+# dboard1 = calcDistanceBoard(board1)
+# score1 = evalScore(dboard1)
+# drawMatrix("Initial Board", initial, dboard, score)
+# drawMatrix("Final Board", board1, dboard1, score1)
