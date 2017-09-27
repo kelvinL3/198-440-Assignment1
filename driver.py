@@ -31,15 +31,15 @@ def calcDistanceBoard(board):
 	return distanceBoard
 
 #BasicHillClimbing, for loading in a specific one
-def doHillClimbing(board, size, iterations, p=0, name=""):
-	f = open("randomWalkHillClimb" + name +".txt","a") #a is for appending, pointer is at end of file
-	afterBasicHillClimbing = basicHillClimbing(board, iterations, p, f=f)
+def doHillClimbing(board, size, iterations, p=0,):
+	#f = open("randomWalkHillClimb" + name +".txt","a") #a is for appending, pointer is at end of file
+	afterBasicHillClimbing = basicHillClimbing(board, iterations, p)
 	return afterBasicHillClimbing
 
 #HillClimbingWithRandomRestart
-def doHillClimbingWithRandomRestart(size, iterations, numberOfRestarts, p=0, name=""):
+def doHillClimbingWithRandomRestart(size, iterations, numberOfRestarts, visualize = False):
 
-	afterHillClimbingWithRestart = hillClimbingWithRandomRestart(size, iterations, numberOfRestarts, p, name)
+	afterHillClimbingWithRestart = hillClimbingWithRandomRestart(size, iterations, numberOfRestarts)
 	# i = 0
 	# while i < numberOfRestarts:
 	# 	print("\t\t\tBoard", i+1)
@@ -50,12 +50,30 @@ def doHillClimbingWithRandomRestart(size, iterations, numberOfRestarts, p=0, nam
 	# 	print(afterHillClimbingWithRestart.distanceBoards[i])
 	# 	print(afterHillClimbingWithRestart.scores[i])
 	# 	i += 1
-
-	print("Best Random Restart:", )
-	indices = bestRandomRestart(afterHillClimbingWithRestart)
-	for x in indices:
-		print(afterHillClimbingWithRestart.boards[x])
+	
+	timeToExecute = datetime.now() - starttimme
+	if visualize:
+		indices = bestInitialStart(afterHillClimbingWithRestart)
 		#gives the index of the best outcome
+		for x in indices:
+			board = afterHillClimbingWithRestart.preBoards[x]
+			dboard = afterHillClimbingWithRestart.preDistanceBoards[x]
+			score = afterHillClimbingWithRestart.preScores[x]
+			# drawMatrix("Initial Board", board, dboard, score, timeToExecute)
+			drawMatrix("Best Initial Board", board, dboard, score, timeToExecute)
+
+		indices = bestRandomRestart(afterHillClimbingWithRestart)
+		#gives the index of the best outcome
+		for x in indices:
+			board1 = afterHillClimbingWithRestart.boards[x]
+			dboard1 = afterHillClimbingWithRestart.distanceBoards[x]
+			score1 = afterHillClimbingWithRestart.scores[x]
+			# drawMatrix("Initial Board", board, dboard, score, timeToExecute)
+			drawMatrix("Final Board", board1, dboard1, score1, timeToExecute)
+
+
+
+
 #HillClimbingWithRandomRestart
 def doHillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, T, d):
 
@@ -77,6 +95,14 @@ def doHillClimbingWithSimulatedAnnealing(size, iterations, numberOfRestarts, T, 
 		print(x)
 		#gives the index of the best outcome
 
+def readInBoardAndSolve(name):
+	board = readBoard(name)
+	dboard = calcDistanceBoard(board)
+	score = evalScore(dboard)
+	#time.sleep(1)
+	timeToExecute = datetime.now() - starttimme
+	drawMatrix("Initial Board", board, dboard, score, timeToExecute) #basically visualize
+	return 
 
 def basicBoardCreation(size):
 	board = createAndCalcBoard(size)
@@ -85,12 +111,13 @@ def basicBoardCreation(size):
 	#time.sleep(1)
 	timeToExecute = datetime.now() - starttimme
 	drawMatrix("Initial Board", board, dboard, score, timeToExecute) #basically visualize
+	return
 
-def basicHillClimbingDriver(size, iterations, p=0, visualize = False, name=""):
+def basicHillClimbingDriver(size, iterations, p=0, visualize = False):
 	board = createAndCalcBoard(size)
 	dboard = calcDistanceBoard(board)
 	score = evalScore(dboard)
-	board1 = doHillClimbing(board, size, iterations, p=p, name=name)
+	board1 = doHillClimbing(board, size, iterations, p=p)
 	dboard1 = calcDistanceBoard(board1)
 	score1 = evalScore(dboard1)
 	timeToExecute = datetime.now() - starttimme
@@ -98,18 +125,13 @@ def basicHillClimbingDriver(size, iterations, p=0, visualize = False, name=""):
 		drawMatrix("Initial Board", board, dboard, score, timeToExecute)
 		drawMatrix("Final Board", board1, dboard1, score1, timeToExecute)
 
-def randomRestartHillClimbingDriver(size, iterations, numberOfRestarts, visualize = False, name=""):
-	# size, iterations, numberOfRestarts, p=0, name=""
-	##print("1 level")
-	board1 = doHillClimbingWithRandomRestart(size, iterations, numberOfRestarts, p=0, name=name)
-	timeToExecute = datetime.now() - starttimme
-	if visualize:
-		drawMatrix("Initial Board", board, dboard, score, timeToExecute)
-		drawMatrix("Final Board", board1, dboard1, score1, timeToExecute)
-
 def simAnnealDriver(size, iterations, T, d, visualize = False, f=None):
 	board = generateBoard(size)
+	dboard = calcDistanceBoard(board)
+	score = evalScore(dboard)
 	board1 = simAnnealHillClimbing(board, iterations, T, d, f)
+	dboard1 = calcDistanceBoard(board1)
+	score1 = evalScore(dboard1)
 	timeToExecute = datetime.now() - starttimme
 	if visualize:
 		drawMatrix("Initial Board", board, dboard, score, timeToExecute)
@@ -127,7 +149,7 @@ def simAnnealDriver(size, iterations, T, d, visualize = False, f=None):
 
 starttimme = datetime.now()
 #size = 5
-iterations = 2000
+#iterations = 2000
 #numberOfRestarts = 3
 
 

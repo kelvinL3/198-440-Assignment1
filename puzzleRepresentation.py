@@ -34,7 +34,7 @@ def writeBoard(board, name):
 			for j in range(board[0].size):
 				f.write(str(board[i,j]))
 				#if i != (board[0].size-1) or j != (board[0].size-1):
-				f.write(", ")
+				f.write(" ")
 			f.write("\n")
 	else:
 		exit()
@@ -48,8 +48,14 @@ def readBoard(name):
 	j = 0
 	for line in file:
 		while line != "\n":
-			temp = line[:line.find(",")]
-			line = line[line.find(",")+2:]
+			if line.find(",") != -1:
+				index = line.find(",")
+			elif line.find(" ") != -1:
+				index = line.find(" ")
+			else:
+				print("error")
+			temp = line[:index]
+			line = line[index+1:]
 			#print("temp:", temp,";",line)
 			board[j,i] = int(temp)
 			i+=1

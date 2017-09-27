@@ -37,20 +37,7 @@ class Ui_Form(object):
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8(self.name))
 		Form.resize(1500, 800) # whole window #length, height 
-			# self.layoutWidget = QtGui.QWidget(Form)
-			# self.layoutWidget.setGeometry(QtCore.QRect(400, 20, 258, 227)) #other button I dont need
-			# self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
-			# self.verticalLayout = QtGui.QVBoxLayout(self.layoutWidget)
-			# self.verticalLayout.setMargin(0)
-			# self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-			# self.textBrowser = QtGui.QTextBrowser(self.layoutWidget)
-			# self.textBrowser.setObjectName(_fromUtf8("textBrowser"))
-			# self.verticalLayout.addWidget(self.textBrowser)
-			# self.pushButton_3 = QtGui.QPushButton(self.layoutWidget)
-			# self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
-			# self.verticalLayout.addWidget(self.pushButton_3)
-		
-		#self.Voltage_Label[i].setFont(font)
+
 
 		self.layoutWidget1 = QtGui.QWidget(Form)
 		self.layoutWidget1.setGeometry(QtCore.QRect(20, 20, 720, 720))
@@ -80,9 +67,6 @@ class Ui_Form(object):
 		self.pushButton = QtGui.QPushButton(self.layoutWidget1)
 		self.pushButton.setObjectName(_fromUtf8("pushButton"))
 		self.horizontalLayout.addWidget(self.pushButton)
-		#self.pushButton_4 = QtGui.QPushButton(self.layoutWidget1)
-		#self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
-		#self.horizontalLayout.addWidget(self.pushButton_4)
 		self.verticalLayout_2.addLayout(self.horizontalLayout)
 
 		#scoreLabel
@@ -106,18 +90,11 @@ class Ui_Form(object):
 		self.ShowMem(self.matrix1)
 		self.layoutWidget1.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.MinimumExpanding))
 		QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.SwitchBoard)
-		#QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), self.tableView.reset)
-			#QtCore.QObject.connect(self.pushButton_3, QtCore.SIGNAL(_fromUtf8("clicked()")), Form.slot2)
-		#QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), self.textBrowser.clear)
-			#QtCore.QObject.connect(self.pushButton_4, QtCore.SIGNAL(_fromUtf8("clicked()")), Form.slot3)
 		QtCore.QMetaObject.connectSlotsByName(Form)
 
 	def retranslateUi(self, Form):
 		Form.setWindowTitle(_translate(self.name, self.name, None))
-		#self.pushButton_3.setText(_translate("Form", "PushButton", None))
 		self.pushButton.setText(_translate(self.name, "Show Corresponding Distance/Puzzle Board", None))
-		#self.pushButton_4.setText(_translate("Form", "Generate Memory", None))
-		#self.pushButton_2.setText(_translate("Form", "Clear", None))
 	def ShowMem(self, matrix):
 		self.tableView.setRowCount(len(matrix))
 		self.tableView.setColumnCount(len(matrix[0]))

@@ -21,6 +21,16 @@ class pairOfBoardsEvalScores(object):
 		self.distanceBoards = distanceBoards
 		self.scores = scores
 
+def bestInitialStart(pairOfBoardsEvalScores):
+	maxScore = None
+	indices = []
+	for index, score in enumerate(pairOfBoardsEvalScores.preScores):
+	    if maxScore is None or score > maxScore:
+	        indices = [index]
+	        maxScore = score
+	    elif score == maxScore:
+	        indices.append(index)
+	return indices
 def bestRandomRestart(pairOfBoardsEvalScores):
 	maxScore = None
 	indices = []
@@ -50,7 +60,7 @@ def basicHillClimbing(board, iterations, p, best="", fString="", f=None):
 	count1 = 0
 	count2 = 0
 
-	fString = ""
+	#fString = ""
 	while i <= iterations:
 		coor = chooseRandomCell(hillClimbBoard[0].size)
 		maxMoves = np.empty(4)
@@ -66,7 +76,7 @@ def basicHillClimbing(board, iterations, p, best="", fString="", f=None):
 		#if eval > best[0]:
 		#	best[0] = eval 
 		
-		fString = fString + str(eval) + ","
+		#fString = fString + str(eval) + ","
 		#print(fString)
 		if newEval >= eval:
 			eval = newEval
@@ -75,13 +85,12 @@ def basicHillClimbing(board, iterations, p, best="", fString="", f=None):
 		else:
 			hillClimbBoard[coor.row-1,coor.col-1] = prevValue
 		i += 1
-	#fString = fString + str(best[0]) + ","
-	#print("fString= " + fString)
-	f.write(fString + "\n")
-	#coord = coordinate(hillClimbBoard, best)
+	##fString = fString + str(best[0]) + ","
+	##print("fString= " + fString)
+	#f.write(fString + "\n")
 	return hillClimbBoard
 
-def hillClimbingWithRandomRestart(size, iterations, restarts, p, name=""):
+def hillClimbingWithRandomRestart(size, iterations, restarts):
 	preStarts = []
 	preDistanceBoards = []
 	preEvalStarts = []
@@ -90,11 +99,9 @@ def hillClimbingWithRandomRestart(size, iterations, restarts, p, name=""):
 	evalCandidates = []
 
 	best = [-size*size]
-	##print("3 level" + str(best))
-	f = open("randomRestartHillClimbingPlotData" + name + ".csv","a") #a is for appending, pointer is at end of file
+	#f = open("randomRestartHillClimbingPlotData" + name + ".csv","a") #a is for appending, pointer is at end of file
 
 
-	fString = ""
 	for i in range(0, restarts):
 
 		board = generateBoard(size)
@@ -109,7 +116,8 @@ def hillClimbingWithRandomRestart(size, iterations, restarts, p, name=""):
 		tempBoard = np.copy(board)
 		#print("called the function")
 		##print("best: " + str(best[0]))
-		tempCandidate = basicHillClimbing(tempBoard, iterations/restarts, p, best, fString, f)
+		p=0
+		tempCandidate = basicHillClimbing(tempBoard, iterations/restarts, p, best)
 		# ans = basicHillClimbing(tempBoard, iterations/restarts, p, best, fString, f)
 		# tempCandidate = ans.row
 		# best = ans.col
@@ -120,14 +128,13 @@ def hillClimbingWithRandomRestart(size, iterations, restarts, p, name=""):
 		distanceBoards.append(distanceBoard)
 
 		evalCandidates.append(evalScore(distanceBoard))
-	f.write("\n")
 
 	candidatePairBoardEvalScore = pairOfBoardsEvalScores(preStarts, preDistanceBoards, preEvalStarts, candidates, distanceBoards, evalCandidates)
 	return candidatePairBoardEvalScore
 ############### BASICALLY A COPY OF THE ABOVE TWO FUNCTIONS #############################
 def simAnnealProb(T, d, prevScore, postScore):
 	#eval>newEval; #prevScore>postScore
-	print("MATH",postScore, prevScore, T, pow(math.e, (postScore - prevScore)/T))
+	#print("MATH",postScore, prevScore, T, pow(math.e, (postScore - prevScore)/T))
 	prob = pow(math.e, (postScore - prevScore)/T)
 	return prob
 
@@ -139,7 +146,7 @@ def simAnnealHillClimbing(board, iterations, T, d, f=None):
 	count1 = 0
 	count2 = 0
 
-	fString = ""
+	#fString = ""
 	tempT = T
 	while i <= iterations:
 		coor = chooseRandomCell(hillClimbBoard[0].size)
@@ -154,20 +161,20 @@ def simAnnealHillClimbing(board, iterations, T, d, f=None):
 		newEval = int(evalScore(calcNumberToReach(evaluate(hillClimbBoard), size)))
 
 		if newEval >= eval:
-			print("SAME", newEval, eval)
+			#print("SAME", newEval, eval)
 			eval = newEval
 			#eval>newEval
 		elif np.random.random() < simAnnealProb(tempT, d, eval, newEval):
-			print("simmed", newEval, eval)
+			#print("simmed", newEval, eval)
 			eval = newEval
 		else:
-			print("revert", newEval, eval)
+			#print("revert", newEval, eval)
 			hillClimbBoard[coor.row-1,coor.col-1] = prevValue
 		#print(eval, " ", newEval, " ", T, "  ", simAnnealProb(T, d, eval, newEval))
-		fString = fString + str(eval) + ","
+		#fString = fString + str(eval) + ","
 		tempT = tempT*d
 		i += 1
-	f.write(fString+"\n")
+	#f.write(fString+"\n")
 	return hillClimbBoard
 
 def hillClimbingWithSimulatedAnnealing(size, iterations, restarts, T, d):
